@@ -1,13 +1,74 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Category { 
+  ELECTRONICS
+  APPAREL
+  FOOTWEAR
+  HOME_AND_LIVING
+  SPORTS_AND_FITNESS
+  BEAUTY
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  RELEASED
+}
+
+model Product {
+  productId String @id @default(cuid())
+  sku String @unique
+  name String 
+  description String?
+  price Decimal @db.Decimal(10, 2)
+  weightKg Decimal? @db.Decimal(10, 2)
+  category Category
+  imageUrl String?
+
+  stock Stock[]
+}
+
+model Warehouse {
+  warehouseId String @id @default(cuid())
+  name String 
+  location String
+  pincode String?
+  deliveryBaseFee Decimal @db.Decimal(10, 2)
+  deliveryFeePerKg Decimal @db.Decimal(10, 2)
+
+  stock Stock[]
+}
+
+model Stock {
+  stockId String @id @default(cuid())
+  productId String
+  warehouseId String
+  totalUnits Int @default(0)
+  reservedUnits Int @default(0)
+  updatedAt DateTime @updatedAt
+
+  product Product @relation(fields: [productId], references: [productId])
+  warehouse Warehouse @relation(fields: [warehouseId], references: [warehouseId])
+  @@unique([productId, warehouseId])
+
+  reservations Reservation[]
+}
+
+model Reservation {
+  reservationID String @id @default(cuid())
+  stockId String
+  quantity Int
+  status ReservationStatus @default(PENDING)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stock Stock @relation(fields: [stockId], references : [stockId])
 }
