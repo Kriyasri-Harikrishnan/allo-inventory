@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { lazyCleanup } from "@/lib/lazyCleanup"
 
 export async function GET() {
     try {
+        await lazyCleanup()
         const now = new Date()
 
         const [reservations, stocks] = await Promise.all([
