@@ -40,6 +40,9 @@ export async function POST(
                 data : {status : "RELEASED"},
             })
 
+        } , {
+            timeout: 10000,
+            maxWait: 5000, 
         })
 
         return NextResponse.json(result)

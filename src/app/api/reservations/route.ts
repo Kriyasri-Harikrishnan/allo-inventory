@@ -66,6 +66,9 @@ export async function POST(req : NextRequest) {
             })
 
             return newReservation
+        } , {
+            timeout: 10000,
+            maxWait: 5000, 
         })
 
         return NextResponse.json(reservation, { status: 201 })

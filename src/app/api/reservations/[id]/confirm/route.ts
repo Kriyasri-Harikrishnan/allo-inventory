@@ -59,6 +59,9 @@ export async function POST(
                 where : {reservationID : id},
                 data : {status : "CONFIRMED"},
             })
+        } , {
+            timeout: 10000,
+            maxWait: 5000, 
         })
 
         if ((result as any).__status === "EXPIRED") {
