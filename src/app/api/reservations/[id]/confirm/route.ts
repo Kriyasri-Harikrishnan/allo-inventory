@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"
 
+type ReservationRow = {
+    reservationID: string
+    status: string
+    expiresAt: Date
+    stockId: string
+    quantity: number                
+}
+
 export async function POST(
     req: NextRequest,
     {params} : {params : Promise<{id: string}>}
@@ -8,11 +16,18 @@ export async function POST(
     try {
         const {id} = await params
         const result = await prisma.$transaction(async (tx) => {
-            const reservation = await tx.reservation.findUnique({
-                where : {reservationID : id},
-            })
 
-            if(!reservation) {throw {code : "NOT_FOUND"}}
+            const rows = await tx.$queryRaw<ReservationRow[]>`
+                SELECT "reservationID", "status", "expiresAt", "stockId", "quantity"
+                FROM "Reservation"
+                WHERE "reservationID" = ${id}
+                FOR UPDATE
+            `
+
+            if (rows.length === 0) {throw { code: "NOT_FOUND" }}
+
+            const reservation = rows[0]
+
             if(reservation.status !== "PENDING") {throw {code : "INVALID_STATUS"}}
             
             if(new Date() > reservation.expiresAt) { /* Stocks Reservation Expired */
