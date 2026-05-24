@@ -88,7 +88,7 @@ export default function ProductCard({
 
 				{/* Stock summary */}
 				<div className="flex items-center justify-between text-xs text-zinc-400">
-					<span>{totalUnits} units · {stock.length} warehouses</span>
+					<span>{totalUnits} units · {stock.length} locations</span>
 					<span className={
 						totalAvailable === 0 ? "text-red-500 font-medium" :
 							totalAvailable <= 5 ? "text-amber-500 font-medium" :
@@ -103,7 +103,7 @@ export default function ProductCard({
 					onClick={() => setExpanded(!expanded)}
 					className="w-full text-xs font-medium text-zinc-500 hover:text-zinc-900 border border-zinc-200 hover:border-zinc-400 rounded-lg py-2 transition-colors"
 				>
-					{expanded ? "Hide warehouse details ▲" : "Show warehouse details ▼"}
+					{expanded ? "Hide available locations ▲" : "Available Locations ▼"}
 				</button>
 
 				{/* Warehouse rows */}

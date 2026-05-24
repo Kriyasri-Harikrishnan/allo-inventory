@@ -41,7 +41,7 @@ export default function ProductsPage() {
 			<div className="mb-6">
 				<h1 className="text-2xl font-bold text-zinc-900">Products</h1>
 				<p className="text-sm text-zinc-400 mt-1">
-					Browse products and reserve stock from your nearest warehouse
+					Browse, Purchase, and get products delivered quickly!
 				</p>
 			</div>
 
@@ -49,7 +49,7 @@ export default function ProductsPage() {
 			<div className="flex flex-col sm:flex-row gap-3 mb-8">
 				<input
 					type="text"
-					placeholder="Search by name or SKU..."
+					placeholder="Search by name..."
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}
 					className="flex-1 text-sm border border-zinc-200 rounded-lg px-4 py-2 focus:outline-none focus:border-zinc-400 bg-white"
